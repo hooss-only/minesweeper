@@ -1,6 +1,8 @@
 #include <ncurses.h>
 #include <locale.h>
 
+#include "game.h"
+
 const char *LOGO[] = {
 	"███╗   ███╗██╗███╗   ██╗███████╗███████╗██╗    ██╗███████╗███████╗██████╗ ███████╗██████╗ ",
 	"████╗ ████║██║████╗  ██║██╔════╝██╔════╝██║    ██║██╔════╝██╔════╝██╔══██╗██╔════╝██╔══██╗",
@@ -18,7 +20,8 @@ int menu() {
 	
 	const char *options[] = {
 		"PLAY EASY (10x10, 10 mines)",
-		"PLAY HARD (40x40, 60 mines)",
+		"PLAY HARD (10x10, 30 mines)",
+		"PLAY TEST (10x10, 1 mines)",
 		"EXIT"
 	};
 	const size_t length = sizeof(options)/sizeof(char*);
@@ -91,7 +94,8 @@ int main() {
 	setlocale(LC_CTYPE, "");
 	init();
 
-	menu();
+	int sel = menu();
+	game(sel);
 
 	endwin();
 	return 0;
