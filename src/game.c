@@ -197,9 +197,14 @@ void game(int sel) {
 		case 1:
 			WIDTH = 10;
 			HEIGHT = 10;
-			MINE_AMOUNT = 30;
+			MINE_AMOUNT = 20;
 			break;
 		case 2:
+			WIDTH = 10;
+			HEIGHT = 10;
+			MINE_AMOUNT = 30;
+			break;
+		case 3:
 			WIDTH = 10;
 			HEIGHT = 10;
 			MINE_AMOUNT = 1;

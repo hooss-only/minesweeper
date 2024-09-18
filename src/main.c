@@ -12,21 +12,22 @@ const char *LOGO[] = {
 	"╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝ ╚══╝╚══╝ ╚══════╝╚══════╝╚═╝     ╚══════╝╚═╝  ╚═╝"
 };
 
+const char *options[] = {
+		"PLAY EASY (10x10, 10 mines)",
+		"PLAY MEDIUM (10x10, 20 mines)",
+		"PLAY HARD (10x10, 30 mines)",
+		"PLAY TEST (10x10, 1 mines)",
+		"EXIT"
+	};
+const size_t length = sizeof(options)/sizeof(char*);
+
 int menu() {
 	int ch;
 	int sel = 0;
 	
 	size_t len = sizeof(LOGO)/sizeof(char*);
 	
-	const char *options[] = {
-		"PLAY EASY (10x10, 10 mines)",
-		"PLAY HARD (10x10, 30 mines)",
-		"PLAY TEST (10x10, 1 mines)",
-		"EXIT"
-	};
-	const size_t length = sizeof(options)/sizeof(char*);
-
-	for (int i=0; i<len; i++) {
+		for (int i=0; i<len; i++) {
 		mvprintw(i, 0, "%s", LOGO[i]);
 	}
 	
@@ -95,6 +96,7 @@ int main() {
 	init();
 
 	int sel = menu();
+	if (sel == length-1) { endwin(); return 0; }
 	game(sel);
 
 	endwin();
