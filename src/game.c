@@ -3,7 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ncurses.h>
-
+const int dx[8] = { -1, -1, -1, 0, 0, 1, 1, 1 };
+const int dy[8] = { -1, 0, 1, -1, 1, -1, 0, 1 };
 int WIDTH, HEIGHT, MINE_AMOUNT;
 bool loop_con = true; bool end = false;
 void init_mine_map(bool mine_map[WIDTH][HEIGHT]) {
@@ -92,8 +93,6 @@ void dfs(int width, int height, char playing_board[width][height], unsigned int 
   visited[x][y] = true;
 	playing_board[x][y] = game_board[x][y];
 
-	int dx[8] = { -1, -1, -1, 0, 0, 1, 1, 1 };
-	int dy[8] = { -1, 0, 1, -1, 1, -1, 0, 1 };
 	int nx, ny;
 	if (game_board[x][y] == 0) {
 		for (int k=0; k<8; k++) {
@@ -125,6 +124,18 @@ void check_win(int width, int height, char playing_board[width][height], unsigne
 	}
 }
 
+void lose(int width, int height, unsigned int game_board[width][height], char playing_board[width][height]) {
+		for (int i=0; i<height; i++)
+			for (int j=0; j<width; j++)
+				if (game_board[i][j] == '*')
+					playing_board[i][j] = game_board[i][j];
+		print_board(-1, -1, width, height, playing_board);
+		attron(COLOR_PAIR(4));
+		mvprintw(height+1, 0, "YOU LOSE!!");
+		attroff(COLOR_PAIR(4));
+		end = true;
+}
+
 void check(int x, int y, int width, int height, unsigned int game_board[width][height], char playing_board[width][height]) {
 	if (playing_board[x][y] == 'X') return;
 	if (game_board[x][y] == 0) {
@@ -134,16 +145,37 @@ void check(int x, int y, int width, int height, unsigned int game_board[width][h
 	}
 
 	if (game_board[x][y] == '*') {
-		for (int i=0; i<height; i++)
-			for (int j=0; j<width; j++)
-				if (game_board[i][j] == '*')
-					playing_board[i][j] = game_board[i][j];
+		
+		lose(width, height, game_board, playing_board);
+		return;
+	}
 
-		print_board(-1, -1, width, height, playing_board);
-		attron(COLOR_PAIR(4));
-		mvprintw(height+1, 0, "YOU LOSE!!");
-		attroff(COLOR_PAIR(4));
-		end = true;
+	if (playing_board[x][y] != '#') {
+		int count_marker = 0;
+		for (int i=0; i<8; i++) {
+			int nx = x+dx[i];
+			int ny = y+dy[i];
+
+			if (nx < 0 || nx >= height || ny < 0 || ny >= width) continue;
+			if (playing_board[nx][ny] == 'X') {
+				if (game_board[nx][ny] != '*') {
+					lose(width, height, game_board, playing_board);
+					return;
+				}
+				count_marker++;
+			}
+		}
+		if (game_board[x][y] == count_marker) {
+			int nx, ny;
+			for (int i=0; i<8; i++) {
+				nx = x+dx[i];
+				ny = y+dy[i];
+
+				if (nx < 0 || nx >= height || ny < 0 || ny >= width || playing_board[nx][ny] == 'X' || playing_board[nx][ny] != '#') continue;
+				check(nx, ny, width, height, game_board, playing_board);
+			}
+		}
+		return;
 	}
 
 	playing_board[x][y] = game_board[x][y];
