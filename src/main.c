@@ -92,7 +92,7 @@ void init() {
 }
 
 int main() {
-	setlocale(LC_CTYPE, "");
+	setlocale(LC_ALL, "");
 	init();
 
 	int sel = menu();
