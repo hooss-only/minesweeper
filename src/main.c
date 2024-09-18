@@ -23,8 +23,23 @@ int menu() {
 	};
 	const size_t length = sizeof(options)/sizeof(char*);
 
-	mvprintw(0, 0, "PRESS ANY KEY TO START!");
+	for (int i=0; i<len; i++) {
+		mvprintw(i, 0, "%s", LOGO[i]);
+	}
 	
+	char *color = "\033[37m";
+	for (int i=0; i<length; i++) {
+		if (i == sel) {
+			attron(COLOR_PAIR(2));
+			mvprintw(len+i, 0, "%s", options[i]);
+			attroff(COLOR_PAIR(2));
+		} else {
+			attron(COLOR_PAIR(1));
+			mvprintw(len+i, 0, "%s", options[i]);
+			attroff(COLOR_PAIR(1));
+		}
+	}
+
 	while ((ch = getch()) != '\n') {
 		switch (ch) {
 			case KEY_UP:
