@@ -8,7 +8,7 @@ const int dy[8] = { -1, 0, 1, -1, 1, -1, 0, 1 };
 int WIDTH, HEIGHT, MINE_AMOUNT;
 bool loop_con = true; bool end = false;
 void init_mine_map(bool mine_map[WIDTH][HEIGHT]) {
-	unsigned int x, y, mine_amount = 0;
+	int x, y, mine_amount = 0;
 
 	while (true) {
 		if (mine_amount >= MINE_AMOUNT) return;
@@ -23,7 +23,7 @@ void init_mine_map(bool mine_map[WIDTH][HEIGHT]) {
 	}
 }
 
-void make_board(unsigned int game_board[WIDTH][HEIGHT], bool mine_map[WIDTH][HEIGHT]) {
+void make_board(int game_board[WIDTH][HEIGHT], bool mine_map[WIDTH][HEIGHT]) {
 	int dx[8] = { 1, 1, 1, 0, 0, -1, -1, -1 };
 	int dy[8] = { 0, 1, -1, 1, -1, 0, 1, -1 };
 	int nx, ny, found = 0;
@@ -87,7 +87,7 @@ void print_board(int x, int y, int width, int height, char playing_board[width][
 }
 
 
-void dfs(int width, int height, char playing_board[width][height], unsigned int game_board[width][height], int x, int y, bool visited[width][height]) {
+void dfs(int width, int height, char playing_board[width][height], int game_board[width][height], int x, int y, bool visited[width][height]) {
   if (x < 0 || x >= width || y < 0 || y >= height || visited[x][y] || playing_board[x][y] == 'X') return;
 
   visited[x][y] = true;
@@ -103,9 +103,9 @@ void dfs(int width, int height, char playing_board[width][height], unsigned int 
 	}
 }
 
-void check_win(int width, int height, char playing_board[width][height], unsigned int mine_amount) {
-	unsigned int not_open = 0;
-	unsigned int marked = 0;
+void check_win(int width, int height, char playing_board[width][height], int mine_amount) {
+	int not_open = 0;
+	int marked = 0;
 	for (int i=0; i<height; i++)
 		for (int j=0; j<width; j++) {
 			if (playing_board[i][j] == '#') not_open++;
@@ -124,7 +124,7 @@ void check_win(int width, int height, char playing_board[width][height], unsigne
 	}
 }
 
-void lose(int width, int height, unsigned int game_board[width][height], char playing_board[width][height]) {
+void lose(int width, int height, int game_board[width][height], char playing_board[width][height]) {
 		for (int i=0; i<height; i++)
 			for (int j=0; j<width; j++)
 				if (game_board[i][j] == '*')
@@ -136,7 +136,7 @@ void lose(int width, int height, unsigned int game_board[width][height], char pl
 		end = true;
 }
 
-void check(int x, int y, int width, int height, unsigned int game_board[width][height], char playing_board[width][height]) {
+void check(int x, int y, int width, int height, int game_board[width][height], char playing_board[width][height]) {
 	if (playing_board[x][y] == 'X') return;
 	if (game_board[x][y] == 0) {
 		bool visited[width][height];
@@ -188,7 +188,7 @@ void mark(int x, int y, int width, int height, char playing_board[width][height]
 }
 
 int x = 0, y = 0;
-void loop(int width, int height, unsigned int game_board[width][height], char playing_board[width][height]) {
+void loop(int width, int height, int game_board[width][height], char playing_board[width][height]) {
 	print_board(x, y, width, height, playing_board);
 	check_win(width, height, playing_board, MINE_AMOUNT);
 
@@ -249,7 +249,7 @@ void game(int sel) {
 	memset(mine_map, 0, sizeof(mine_map));
 	init_mine_map(mine_map);
 
-	unsigned int game_board[WIDTH][HEIGHT];
+	int game_board[WIDTH][HEIGHT];
 	memset(game_board, 0, sizeof(game_board));
 	make_board(game_board, mine_map);
 
