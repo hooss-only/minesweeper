@@ -2,7 +2,7 @@
 CC = clang
 CFLAGS = -Wall -g
 DEPFLAGS = -MMD -MP
-LDFLAGS = -lncursesw
+LDFLAGS = -lncurses
 
 # 타겟 실행 파일
 TARGET = build/output/minesweeper
