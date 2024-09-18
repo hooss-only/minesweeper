@@ -60,7 +60,6 @@ int menu() {
       mvprintw(i, 0, "%s", LOGO[i]);
     }
 
-    char *color = "\033[37m";
     for (int i = 0; i < length; i++) {
       if (i == sel) {
         attron(COLOR_PAIR(2));
