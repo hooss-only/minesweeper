@@ -8,7 +8,6 @@ CLI 지뢰찾기!<br>
 ```
 git clone https://github.com/hooss-only/minesweeper.git --depth=1
 cd minesweeper
-mkdir -p ./build/output
 make
 ./build/output/minesweeper
 ```
